@@ -105,7 +105,7 @@ client.on('messageCreate', async (message) => {
     if (message.content.toLowerCase().startsWith('!deletebudget') || message.content.toLowerCase().startsWith('!resetbudget')) {
         if (userBudgets[message.author.username]) {
           delete userBudgets[message.author.username];
-          saveBudgets(userBudgets);  // Persist the change
+          saveBudgets(userBudgets);  
           message.reply('🗑️ Your budget has been deleted.');
         } else {
           message.reply('⚠️ You don’t have a budget set.');
@@ -174,19 +174,19 @@ client.on('messageCreate', async (message) => {
     const sheets = google.sheets({ version: 'v4', auth: clientAuth });
     const res = await sheets.spreadsheets.values.get({
         spreadsheetId: SPREADSHEET_ID,
-        range: 'Sheet1!A2:E',  // Ensure you're getting all the required columns
+        range: 'Sheet1!A2:E',  
     });
 
     const rows = res.data.values;
     if (!rows || rows.length === 0) return 0;
 
-    const today = new Date().toISOString().slice(0, 10); // Get just the date portion (YYYY-MM-DD)
+    const today = new Date().toISOString().slice(0, 10);
 
     let total = 0;
     for (const row of rows) {
-        const [user, , amount, , timestamp] = row; // Note: we're assuming the timestamp is in the 5th column
+        const [user, , amount, , timestamp] = row; 
         if (user === username && timestamp) {
-            const rowDate = timestamp.slice(0, 10); // Extract just the date portion from the timestamp
+            const rowDate = timestamp.slice(0, 10);
             if (rowDate === today) {
                 total += parseFloat(amount);
             }
@@ -203,7 +203,7 @@ async function getFullSummary(username) {
     const sheets = google.sheets({ version: 'v4', auth: clientAuth });
     const res = await sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'Sheet1!A2:C', // Assuming columns: username, category, amount
+      range: 'Sheet1!A2:C', 
     });
   
     const rows = res.data.values;
